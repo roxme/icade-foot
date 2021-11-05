@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+ 
+{% block title %} ICADE - Football {% endblock %}
+ 
+{% block body %}
+    
+    <h1 class="text-center my-4"> Icade Football </h1>
+    <h2 class="text-center my-4"> Welcome to our amazing app ! </h2>
+
+    <div class="container">
+        <form action="{{ path('home') }}" method="get">
+            <div class="row">
+                <div class="col">
+                    <input type="hidden" name="currentleague" id="currentleague" value="{{app.request.get('league')}}">
+                    <select name="league" id="league" class="form-select"> 
+                        <option> Select a league </option>    
+                        {% for league in leagues %}
+                            <option value="{{ league['league']['id'] }}" 
+                                    data-seasons="{{ league['seasons']|json_encode() }}"
+                                    {% if app.request.get('league') == league['league']['id'] %}selected{% endif %}>
+                                {{ league['league']['name'] }}
+                            </option>
+                        {% endfor %}                        
+                    </select>
+                </div>
+                <div class="col">
+                    <input type="hidden" name="currentseason" id="currentseason" value="{{app.request.get('season')}}">
+                    <select name="season" id="season" class="form-select"> 
+                        <option disabled> Select a season </option>                        
+                    </select>
+                </div>
+                <div class="col">
+                    <input type="hidden" name="currentround" id="currentround" value="{{app.request.get('round')}}">
+                    <select name="round" id="round" class="form-select"> 
+                        <option disabled> Select a round </option>                        
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"> </div>
+                <div class="col submit-button"> <button type="submit" class="btn btn-primary mt-3"> Submit </button> </div>
+                <div class="col"> </div>
+            </div>            
+        </form>
+    </div>
+
+    <h2 class="text-center my-4"> Results {{ roundDate }} <br/> 
+    </h2>
+   
+    <div class="container">
+      
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search" name="search" autocomplete="on">
+            </form>
+            <table class="table result-table" id="result" name ="result">
+                <thead>
+                    <tr data-teams="title">
+                        <th class="col-left">   Home  </th>
+                        <th class="col-center"> Score </th>
+                        <th class="col-right">  Away  </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for result in results %}
+                    <tr data-teams="{{ result['teams']['home']['name'] }}|{{ result['teams']['away']['name'] }}">
+                        <td class="col-left">
+                            {{ result['teams']['home']['name'] }}
+                        <img class="team-logo" src="{{ result['teams']['home']['logo'] }}">
+                        </td>
+                        <td class="col-center">
+                            <a href="{{ path('details', {id: result['fixture']['id']}) }}"> 
+                            {{ result['goals']['home'] ~ ' - ' ~  result['goals']['away'] }}
+                            </a>
+                        </td>
+                        <td class="col-right">
+                            <img class="team-logo" src="{{ result['teams']['away']['logo'] }}">
+                            {{ result['teams']['away']['name'] }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>        
+    </div>    
+
+{% endblock %}

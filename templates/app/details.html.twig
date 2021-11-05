@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} ICADE - Football stats details {% endblock %}
+
+{% block body %}
+
+    {% set infos   = stats['response'][0]  %}  
+
+    {% set fixture    = infos['fixture'] %}
+    {% set league     = infos['league']  %}
+    {% set teams      = infos['teams']   %}
+    {% set goals      = infos['goals']   %}
+    {% set statistics = infos['statistics']   %}
+
+    <div class="container">
+        <div class="text-center p-4 p-md-5 mt-4 mb-4 rounded bg-light">
+            <h1> {{league['name']}} - {{league['round']}} </h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="text-center p-4 p-md-5 mb-4 rounded bg-light">
+            <h2>
+				{{ teams['home']['name'] }} <img class="team-logo" src="{{ teams['home']['logo'] }}">
+                {{ goals['home'] }} - {{ goals['away'] }} 
+                <img class="team-logo" src="{{ teams['away']['logo'] }}"> {{teams['away']['name'] }}
+			</h2>
+            <div>{{ fixture['date']|date('Y-m-d H:i:s') }}</div>
+            <div>{{ fixture['venue']['name'] }} {{ fixture['venue']['city'] }}</div>
+			</h1>            
+        </div>
+    </div>
+    <div class="container text-center">
+        <h2>Statistics</h2>
+		{% if statistics|length == 2 %}
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="col-center">{{ statistics[0]['team']['name'] }}</th> 
+                    <th class="col-center"> Stats                             </th> 
+                    <th class="col-center">{{ statistics[1]['team']['name'] }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in 0..statistics[0]['statistics']|length - 1 %}
+                    <tr>
+                        <td class="col-center">{{ statistics[0]['statistics'][i]['value']|default(0) }}</td>
+                        <td class="col-center">{{ statistics[0]['statistics'][i]['type'] }}            </td>
+                        <td class="col-center">{{ statistics[1]['statistics'][i]['value']|default(0) }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+		{% else %}
+			<div class="text-center"> N/A </div>
+		{% endif %}
+    </div>
+    
+    <div class="container text-center">
+        <h2> Last games - {{ teams['home']['name'] }} </h2>
+        <table class="table">
+            <thead>
+            <tr>                
+                <th class="col-left">   Date  </th> 
+                <th class="col-left">   Home  </th> 
+                <th class="col-center"> Score </th>
+                <th class="col-right">  Away  </th>                 
+            </tr>
+            </thead>
+            <tbody>
+                {# Retreive the 5 latest matchs for "team home" #}
+
+                {% set games = last_team_home['response']|reverse %}
+                {% set len = min( games|length, 5 ) %}
+                
+                {% for i in 0..len - 1 %}
+                    <tr>
+                        <td class="col-left"> 
+                            {{ games[i]['fixture']['date']|date('Y-m-d') }}
+                        </td> 
+                        <td class="col-left">
+                            {{ games[i]['teams']['home']['name'] }}
+                            <img class="team-logo" src="{{ games[i]['teams']['home']['logo'] }}">
+                        </td>
+                        <td class="col-center">                            
+                            {{ games[i]['goals']['home'] }} - {{ games[i]['goals']['away'] }}
+                        </td>
+                        <td class="col-right">                            
+                            <img class="team-logo" src="{{ games[i]['teams']['away']['logo'] }}">
+                            {{ games[i]['teams']['away']['name'] }}
+                        </td>                        
+                    </tr>                    
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container text-center">
+        <h2> Last games - {{ teams['away']['name'] }} </h2>
+        <table class="table">
+            <thead>
+            <tr>                
+                <th class="col-left">   Date  </th> 
+                <th class="col-left">   Home  </th> 
+                <th class="col-center"> Score </th>
+                <th class="col-right">  Away  </th>                 
+            </tr>
+            </thead>
+            <tbody>
+                {# Retreive the 5 latest matchs for "team away" #}
+
+                {% set games = last_team_away['response']|reverse %}
+                {% set len = min( games|length, 5 ) %}
+                
+                {% for i in 0..len - 1 %}
+                    <tr>
+                        <td class="col-left"> 
+                            {{ games[i]['fixture']['date']|date('Y-m-d') }}
+                        </td> 
+                        <td class="col-left">
+                            {{ games[i]['teams']['home']['name'] }}
+                            <img class="team-logo" src="{{ games[i]['teams']['home']['logo'] }}">
+                        </td>
+                        <td class="col-center">                            
+                            {{ games[i]['goals']['home'] }} - {{ games[i]['goals']['away'] }}
+                        </td>
+                        <td class="col-right">                            
+                            <img class="team-logo" src="{{ games[i]['teams']['away']['logo'] }}">
+                            {{ games[i]['teams']['away']['name'] }}
+                        </td>                        
+                    </tr>                    
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

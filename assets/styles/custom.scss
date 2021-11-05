@@ -1,0 +1,38 @@
+// Here you can customize the default bootstrap colors
+$primary:       #FB5607;
+/*
+$secondary:     #FB5607;
+$success:       #3A86FF;
+$info:          #FF006E;
+$light:         #8338EC;
+*/
+
+// Here you can put additionnal custom CSS
+.submit-button {
+    text-align: center;
+}
+
+.team-logo {
+    width: 10%;
+}
+
+.top-container {
+    padding-top: 10px;
+}
+
+.result-table {
+    padding-left:  10px;
+    padding-right: 10px;
+}
+
+.col-left {
+    text-align: right;
+}
+
+.col-center {
+    text-align: center;
+}
+
+.col-right {
+    text-align: left;
+}
