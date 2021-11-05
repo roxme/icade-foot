@@ -13,7 +13,7 @@ https://www.api-football.com
   On a command line window in the project root folder :  
   * Run `composer install`
   * Run `npm install`
-  * npm run build
+  * Run `npm run build`
 
 And that's it :)
 
