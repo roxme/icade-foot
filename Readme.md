@@ -5,13 +5,15 @@ The site must list all football matchs from the French league.
 In this list, you will show the 2 teams, the match score and summary stats. 
 When you click on a match, you will show the game summary stats and the last games for both teams.
 You can also search a team via the search bar which an autocomplete input and filter the game list.
-This will rely on the follwoing API
+This will rely on the follwoing API  
 https://www.api-football.com
 
 ## Installer
-  * Create .env and add your football API_KEY there (you have to signup on the website mentionned above for that),
+  Create .env and add your football API_KEY there (you have to signup on the website mentionned above for that) 
+  On a command line window in the project root folder :  
   * Run `composer install`
   * Run `npm install`
+  * npm run build
 
 And that's it :)
 
